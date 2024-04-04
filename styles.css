@@ -1,0 +1,24 @@
+:root{
+    color-scheme: dark;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    justify-content: space-between;
+}
+
+header, footer {
+    background: #000000;
+    text-align: center;
+}
+
+.grid {
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
