@@ -12,7 +12,7 @@ let defaultColor = "#000000";
 // ---------------------------------------------
 
 //Create grid at start
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", () =>{
     startDrawing()
 });
 
@@ -50,9 +50,8 @@ function draw(color = defaultColor) {
     let squares = document.querySelectorAll(".square");
     squares.forEach((square) => {
         square.addEventListener("mouseover",(e) => {
-
             if (randomize) {
-                e.target.style.backgroundColor = "#" + Math.random().toString(16).substring(-6);
+                e.target.style.backgroundColor = "#" + Math.random().toString(16).substring(2, 8);
             }
             else {
                 e.target.style.backgroundColor = color;
@@ -93,6 +92,6 @@ eraseG.addEventListener("click", () => {
     startDrawing(size);
 })
 
-randomizeCheck.addEventListener("click", (event) => {
-    randomize = event.target.checked;
+randomizeCheck.addEventListener("click", (e) => {
+    randomize = e.target.checked;
 });
