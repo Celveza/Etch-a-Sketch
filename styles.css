@@ -20,9 +20,9 @@ header, footer {
 
 .grid {
     background: white;
-    display: grid;
-    width: 40rem;
-    height: 40rem;
+    display: flex;
+    width: 700px;
+    height: 700px;
     margin: 10px auto 20px;
 }
 
@@ -44,4 +44,8 @@ header, footer {
 }
 button:hover {
     animation: heartbeat 1s infinite;
+}
+
+.cell{
+    box-sizing: border-box;
 }

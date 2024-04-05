@@ -1,72 +1,98 @@
 // Variables
+const grid = document.querySelector(".grid");
+const eraseG = document.querySelector("#erase");
+const changeG = document.querySelector("#change");
+const colorBar = document.querySelector("#colorChange");
+const randomizeCheck = document.querySelector("#randomize");
 
+let randomize = false;
+let size = 16;
+let defaultColor = "#000000";
 
-
-
-// Functions
-
+// ---------------------------------------------
 
 //Create grid at start
 document.addEventListener("DOMContentLoaded", function(){
-    newGrid(16,"#000000")
-    draw()
+    startDrawing()
 });
 
 //Create the grid
 
-function newGrid(size, color) {
-    let grid = document.querySelector(".grid");
-    grid.style.gridTemplateRows = `repeat(${size},1fr)`;
-    grid.style.gridTemplateColumns = `repeat(${size},1fr)`;
-    let howBig = size*size;
+function newGrid(size = 16) {
+    const cellSize = 700 / size;
+    for (let i = 0; i < size; i++) {
+        const columns = document.createElement("div");
+        columns.classList.add("square");
+        columns.style.height = `${cellSize}px`;
+        columns.style.width = `${cellSize}px`;
 
-    for (let i = 0; i < howBig; i++) {
-        let container = document.createElement("div");
-        container.classList.add("squares")
-        grid.insertAdjacentElement("beforeend",container);
+        for (let j = 0; j < size; j++) {
+            let toBePainted = document.createElement("div");
+            toBePainted.classList.add("square");
+            toBePainted.style.height = `${cellSize}px`;
+            toBePainted.style.width = `${cellSize}px`;
+            columns.appendChild(toBePainted);
+        }
+        grid.appendChild(columns);
     }
 }
 
-//Clear the grid.
-let eraseB = document.querySelector("#erase");
-eraseB.addEventListener("click", () => {
-    let remove = document.querySelectorAll(".grid div");
-    remove.forEach(container => {
-        container.style.backgroundColor= "white";
-    });
-} )
+//Remove the grid
 
-//Change the size of grid.
+function removeGrid() {
+    grid.innerHTML = "";
+    colorBar.value = defaultColor;
+}
 
-let changeG = document.querySelector("#change");
-changeG.addEventListener("click", () => {
-    let newSize = prompt("What's the new size?");
-    if (newSize <= 100 && newSize >= 2) {
-        newGrid(newSize, "black");
-    }
-    else {
-        alert("Size must ve between 2 and 100 :D");
-    }
-})
+// Draw
 
-//Draw
+function draw(color = defaultColor) {
+    let squares = document.querySelectorAll(".square");
+    squares.forEach((square) => {
+        square.addEventListener("mouseover",(e) => {
 
-let colorBar = document.querySelector("#colorChange");
-colorBar.addEventListener("change", (e) => {
-    newColor = e.target.value;
-})
-
-function draw(color = "black") {
-    let grid = document.querySelectorAll(".squares");
-    grid.forEach((grid) => {
-        grid.addEventListener("mouseover", (e) => {
-            grid.backgroundColor = "black"
+            if (randomize) {
+                e.target.style.backgroundColor = "#" + Math.random().toString(16).substring(-6);
+            }
+            else {
+                e.target.style.backgroundColor = color;
+            }
         })
     })
 }
 
 function startDrawing(size = 16) {
-    clearGrid();
-    createGrid(size);
-    draw("black");
+    removeGrid();
+    newGrid(size);
+    draw(defaultColor);
 }
+
+
+
+
+// -------------------------------------
+
+
+
+colorBar.addEventListener("input", (e) => {
+    defaultColor = e.target.value;
+    draw(defaultColor);
+})
+
+changeG.addEventListener("click", () => {
+    size = prompt("Insert the size of the grid");
+    if (size <= 100 && size >= 0) {
+        startDrawing(size);
+    }
+    else {
+        alert("Please insert a value between 0 and 100 :D");
+    }
+})
+
+eraseG.addEventListener("click", () => {
+    startDrawing(size);
+})
+
+randomizeCheck.addEventListener("click", (event) => {
+    randomize = event.target.checked;
+});
